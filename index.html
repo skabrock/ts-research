@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TypeScript sandbox</title>
+    <!-- <script defer src="./dist/secret.js"></script> -->
+    <!-- <script defer src="./src/test.js"></script> -->
+    <script defer src="./dist/app.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div>
+      <h1>Hello [TS]!</h1>
+      <div id="container"></div>
+    </div>
+
+    <template id="person-input">
+      <form class="person-input-form">
+        <div>
+          <label for="p-name">Full name:</label>
+          <input name="name" type="text" id="p-name" placeholder="e.g Jon Snow" />
+        </div>
+        <div>
+          <label for="p-about">Information:</label>
+          <textarea name="about" placeholder="Few words about personality" id="p-about"></textarea>
+        </div>
+        <div>
+          <label for="p-position">Position</label>
+          <select name="position" id="p-position">
+            <option value="0">Front-End Developer</option>
+            <option value="1">Back-End Developer</option>
+            <option value="2">QA</option>
+            <option value="3">Manager</option>
+          </select>
+        </div>
+        <button class="submit-person-input">Add person</button>
+      </form>
+    </template>
+
+    <template id="person-list">
+      <section class="persons">
+        <header>
+          <h2></h2>
+        </header>
+        <ul></ul>
+      </section>
+    </template>
+
+    <template id="person-stack">
+      <li>
+        <h2></h2>
+        <h3></h3>
+        <p></p>
+      </li>
+    </template>
+  </body>
+</html>

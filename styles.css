@@ -1,0 +1,123 @@
+*,
+*:before,
+*:after {
+  font-family: "Hachi Maru Pop", cursive;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #a0bec1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100vw;
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+h1 {
+  margin-bottom: 2rem;
+}
+
+#container {
+  min-width: 20vw;
+}
+
+.person-input-form label {
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.person-input-form input,
+.person-input-form textarea,
+.person-input-form select {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #042022;
+}
+
+.submit-person-input {
+  background-color: #1d818a;
+  border: none;
+  padding: 0.5rem 2rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  color: white;
+  border: 1px solid #042022;
+}
+
+.persons {
+  border: 1px solid black;
+  margin-top: 2rem;
+}
+
+.persons header {
+  color: white;
+  background: black;
+  padding: 0.25rem;
+  text-align: center;
+  font-size: 0.75rem;
+}
+
+.persons ul {
+  padding: 0;
+  background: white;
+}
+
+.persons ul li {
+  display: block;
+  padding: 0.5rem;
+}
+
+.persons ul li + li {
+  border-top: 1px solid #151e1f;
+}
+
+.persons ul > li > h2 {
+  color: #220412;
+}
+
+.persons ul > li > h3 {
+  font-size: 0.75rem;
+  color: #343737;
+}
+
+.persons ul > li > p {
+  padding-top: 0.5rem;
+}
+
+#junior-persons {
+  border-color: rgb(34, 80, 34);
+}
+
+#junior-persons header {
+  background-color: rgb(34, 80, 34);
+}
+
+#middle-persons {
+  border-color: rgb(52, 24, 24);
+}
+
+#middle-persons header {
+  background-color: rgb(52, 24, 24);
+}
+
+#senior-persons {
+  border-color: rgb(41, 24, 52);
+}
+
+#senior-persons header {
+  background-color: rgb(41, 24, 52);
+}
+
+#architect-persons {
+  border-color: rgb(48, 52, 24);
+}
+
+#architect-persons header {
+  background-color: rgb(48, 52, 24);
+}
