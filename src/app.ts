@@ -1,3 +1,17 @@
+const REQUIRED_NAME_LENGTH = [2, 25];
+const REQUIRED_INFO_LENGTH = 5;
+
+interface Draggable {
+  dragStartHandler(event: DragEvent): void;
+  dragEndHandler(event: DragEvent): void;
+}
+
+interface DragTarget {
+  dragOverHandler(event: DragEvent): void;
+  dropHandler(event: DragEvent): void;
+  dragLeaveHandler(event: DragEvent): void;
+}
+
 enum PersonExperience {
   junior,
   middle,
@@ -54,6 +68,19 @@ class PersonState extends State<Person> {
     const newPerson = new Person(id, name, info, position, PersonExperience.junior);
     this.persons.push(newPerson);
 
+    this.updateListeners();
+  }
+
+  movePerson(id: string, experience: PersonExperience) {
+    const person = this.persons.find((person) => person.id === id);
+
+    if (person && person.experience !== experience) {
+      person.experience = experience;
+      this.updateListeners();
+    }
+  }
+
+  private updateListeners() {
     this.listeners.forEach((listener) => {
       listener(this.persons.slice());
     });
@@ -135,7 +162,7 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
   abstract renderContent(): void;
 }
 
-class PersonItem extends Component<HTMLUListElement, HTMLLIElement> {
+class PersonItem extends Component<HTMLUListElement, HTMLLIElement> implements Draggable {
   private person: Person;
 
   constructor(hostId: string, person: Person) {
@@ -146,7 +173,18 @@ class PersonItem extends Component<HTMLUListElement, HTMLLIElement> {
     this.renderContent();
   }
 
-  configure() {}
+  @autoBind
+  dragStartHandler(event: DragEvent) {
+    event.dataTransfer!.setData("text/plain", this.person.id);
+    event.dataTransfer!.effectAllowed = "move";
+  }
+
+  dragEndHandler(_event: DragEvent) {}
+
+  configure() {
+    this.element.addEventListener("dragstart", this.dragStartHandler);
+    this.element.addEventListener("dragend", this.dragEndHandler);
+  }
 
   renderContent() {
     this.element.querySelector("h2")!.textContent = this.person.name;
@@ -155,7 +193,7 @@ class PersonItem extends Component<HTMLUListElement, HTMLLIElement> {
   }
 }
 
-class PersonList extends Component<HTMLDivElement, HTMLElement> {
+class PersonList extends Component<HTMLDivElement, HTMLElement> implements DragTarget {
   assignedPersons: Person[];
 
   constructor(private type: "junior" | "middle" | "senior" | "architect") {
@@ -166,7 +204,35 @@ class PersonList extends Component<HTMLDivElement, HTMLElement> {
     this.renderContent();
   }
 
+  @autoBind
+  dragOverHandler(event: DragEvent) {
+    if (event.dataTransfer && event.dataTransfer.types[0] === "text/plain") {
+      event.preventDefault();
+      const listEl = this.element.querySelector("ul")!;
+      listEl.classList.add("droppable");
+    }
+  }
+
+  @autoBind
+  dropHandler(event: DragEvent) {
+    const personId = event.dataTransfer!.getData("text/plain");
+    personState.movePerson(personId, PersonExperience[this.type]);
+
+    const listEl = this.element.querySelector("ul")!;
+    listEl.classList.remove("droppable");
+  }
+
+  @autoBind
+  dragLeaveHandler(_event: DragEvent) {
+    const listEl = this.element.querySelector("ul")!;
+    listEl.classList.remove("droppable");
+  }
+
   configure() {
+    this.element.addEventListener("dragover", this.dragOverHandler);
+    this.element.addEventListener("dragleave", this.dragLeaveHandler);
+    this.element.addEventListener("drop", this.dropHandler);
+
     personState.addListener((persons: Person[]) => {
       this.assignedPersons = persons.filter((subject) => {
         return PersonExperience[subject.experience] === this.type;
@@ -206,8 +272,9 @@ class PersonInput extends Component<HTMLDivElement, HTMLFormElement> {
     this.configure();
   }
 
+  @autoBind
   configure() {
-    this.element.addEventListener("submit", this.submitHandler.bind(this));
+    this.element.addEventListener("submit", this.submitHandler);
   }
 
   renderContent() {}
@@ -220,20 +287,19 @@ class PersonInput extends Component<HTMLDivElement, HTMLFormElement> {
     const nameValidatable: Validatable = {
       value: enteredName,
       required: true,
-      minLength: 2,
-      maxLength: 20,
+      minLength: REQUIRED_NAME_LENGTH[0],
+      maxLength: REQUIRED_NAME_LENGTH[1],
     };
 
     const aboutValidatable: Validatable = {
       value: enteredAbout,
       required: true,
-      minLength: 10,
+      minLength: REQUIRED_INFO_LENGTH,
     };
 
     const positionValidatable: Validatable = {
       value: enteredPosition,
       required: true,
-      min: 0,
       max: 4,
     };
 

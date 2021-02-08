@@ -63,18 +63,19 @@ h1 {
   font-size: 0.75rem;
 }
 
-.persons ul {
-  padding: 0;
+.persons > ul {
+  padding: 0.5rem 0;
   background: white;
+  overflow: hidden;
 }
 
 .persons ul li {
   display: block;
-  padding: 0.5rem;
-}
-
-.persons ul li + li {
-  border-top: 1px solid #151e1f;
+  padding: 0.25rem 0.5rem;
+  border-top: 0.5rem solid white;
+  border-bottom: 0.5rem solid white;
+  border-left: 0.5rem solid black;
+  background: #e8e8e8;
 }
 
 .persons ul > li > h2 {
@@ -120,4 +121,8 @@ h1 {
 
 #architect-persons header {
   background-color: rgb(48, 52, 24);
+}
+
+ul.droppable {
+  outline: 5px dashed rgb(196, 81, 73);
 }
